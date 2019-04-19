@@ -1,0 +1,27 @@
+version: "3"
+services:
+  mongo:
+    image: mongo:3.4-xenial
+    ports:
+      - 27017:27017
+    networks:
+      - mongodock
+    volumes:
+      - "$PWD/data:/data/db"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+  express:
+    build: ./express
+    image: mongo-express-wait:0.49
+    ports:
+      - 8087:8081
+    networks:
+      - mongodock
+    environment:
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: 'true'
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+
+networks:
+  mongodock:
